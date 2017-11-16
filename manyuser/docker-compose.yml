@@ -4,7 +4,8 @@ services:
   ssr:
     restart: always
     image: cacaty/python
+    container_name: ssr-mu
     volumes:
-      - /home/shadowsock/manyuser/shadowsocksr:/shadowsocksr
+      - ./shadowsocksr:/shadowsocksr
     network_mode: "host"
     command: /shadowsocksr/logrun.sh
