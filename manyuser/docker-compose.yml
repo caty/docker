@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  ssr:
+    restart: always
+    image: cacaty/python
+    volumes:
+      - /home/shadowsock/manyuser/shadowsocksr:/shadowsocksr
+    network_mode: "host"
+    command: /shadowsocksr/logrun.sh

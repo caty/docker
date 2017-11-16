@@ -1,0 +1,48 @@
+version: '2'
+
+services:
+  redis:
+    restart: always
+    image: redis:latest
+    container_name: sspanel_redis
+    command:
+      - --loglevel warning
+    volumes:
+      - ./redis_data:/var/lib/redis:Z
+
+  mysql:
+      image: mariadb:10.0
+      container_name: sspanel_mysql
+      environment:
+        - MYSQL_ROOT_PASSWORD=sspanel4mars
+        - MYSQL_DATABASE=sspanel
+      ports:
+        - 127.0.0.1:3306:3306
+      volumes:
+        - ./mysql_data:/var/lib/mysql:Z
+
+  ss-panel:
+      image: cacaty/ss-panel
+      ports:
+        - 8080:80
+      container_name: sspanel
+      depends_on:
+        - mysql
+        - redis
+      environment:
+        - SKIP_COMPOSER=true
+        - MIGRATION=
+        - ADMIN_EMAIL=
+        - ADMIN_PASS=
+
+        - APP_LANG=zh_cn
+
+        - AUTH_SALT=
+        - AUTH_PASSWORD_ENCRYPTION_TYPE=bcrypt
+
+        - DB_HOST=mysql
+        - DB_DATABASE=sspanel
+        - DB_USERNAME=root
+        - DB_PASSWORD=sspanel4mars
+
+        - REDIS_HOST=redis
